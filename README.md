@@ -1,2 +1,2 @@
 # diceware
-Romanian Diceware, script(s) and list(s)
+Diceware in Romanian, script(s) and list(s)
