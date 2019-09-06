@@ -1,6 +1,7 @@
 const request = require('request-promise-native');
 const jsdom = require('jsdom');
 const fs = require('fs');
+const dicewareKit = require('./dicewareKit.js');
 
 const { JSDOM } = jsdom;
 
@@ -17,9 +18,8 @@ const DICT_SEARCH_START_QUERY = 'aa*';
 const SAVE_FILE_NAME = 'words.txt';
 
 /*
- * Starts parsing a certain dictionary HTML page of
+ * Starts parsing a certain dictionary HTML page of the
  * dexonline.ro DEX '09 search.
- * The element constant can be changed for other dictionary pages.
  */
 function parseDictHtml(html) {
   const DOM = new JSDOM(html);
@@ -37,8 +37,8 @@ function parseDictHtml(html) {
 
 /* 
  * Get the similarity percentage between Word A and Word B:
- * Word A % similar to Word B
- * Word B % similar to Word A
+ * Word A % similar to Word B,
+ * Word B % similar to Word A.
  */
 function getSimilarityPercentage(strWordA, strWordB) {
   const numMaxLen = Math.max(strWordA.length, strWordB.length);
@@ -63,12 +63,13 @@ function getSimilarityPercentage(strWordA, strWordB) {
 /*
  * Gets an array of matching words from a list of word elements
  * Current conditions:
- *   - The word hasn't been added already;
  *   - The word is beween `WORD_MIN_LEN` and `WORD_MAX_LEN` in length;
+ *   - There are no diacritics in 'word';
+ *   - The word hasn't been added already;
+ *   - The word isn't in the `dicewareKit` list;
  *   - The word isn't 'similar' to the previously added word (see below);
- *   - There are no spaces in the 'word';
- *   - There are no dots in the 'word';
- *   - There are no diacritics in the word.
+ *   - There are no spaces in 'word';
+ *   - There are no dots in 'word'.
  */
 function loopThroughWordElements(list) {
   let arrMatchingWords = [];
@@ -77,21 +78,34 @@ function loopThroughWordElements(list) {
   return new Promise((resolve) => {
     for (var i = 0; i < list.children.length; i++) {
       const elemChild = list.children[i];
-      // Clean the word definition of digits and explanations in paranthesis
-      let strWord = elemChild.textContent.replace(/\d/, '').replace(/\(.+?\)/, '').trim();
+      /*
+        Clean the word definition by removing:
+          - explanations in paranthesis;
+          - digits;
+          - hyphens.
+      */
+      let strWord = elemChild.textContent
+        .toLowerCase().replace(/\(.+?\)/g, '').replace(/(\d|-)/g, '').trim();
     
+      if (strWord.length < WORD_MIN_LEN || strWord.length > WORD_MAX_LEN) {
+        continue;
+      }
+      // Remove this if you'd like to produce an UTF8 version of the list.
+      if (/ă|î|â|ț|ș/.test(strWord)) {
+        continue;
+      }
       if (arrMatchingWords.indexOf(strWord) > -1) {
         continue;
       }
-      if (strWord.length < WORD_MIN_LEN || strWord.length > WORD_MAX_LEN) {
+      if (dicewareKit[strWord[0]].indexOf(strWord) > -1) {
         continue;
       }
       if (strPrevWord) {
         const arrSimilarityPercentage = getSimilarityPercentage(strWord, strPrevWord);
     
         /*
-          The longer word is over 50% the same as the shorter one,
-          and the shorter word is over 70% the same as the longer one.
+          The longer word is over LONG_SIMILARITY_PERCENTAGE% the same as the shorter one,
+          and the shorter word is over SHORT_SIMILARITY_PERCENTAGE% the same as the longer one.
         */
         if (
           arrSimilarityPercentage[0] > LONG_SIMILARITY_PERCENTAGE &&
@@ -106,15 +120,14 @@ function loopThroughWordElements(list) {
       if (/\./.test(strWord)) {
         continue;
       }
-      // Remove this if you'd like to produce an UTF8 version of the list
-      if (/ă|î|â|ț|ș/.test(strWord)) {
-        continue;
-      }
     
       arrMatchingWords.push(strWord);
       strPrevWord = strWord;
     }
 
+    // @TODO
+    // Concat `dicewareKit[strWord[0]]` with `arrWords`,
+    // and then finally concat with `arrMatchingWords`
     arrWords = arrWords.concat(arrMatchingWords);
 
     resolve(arrWords.length);
@@ -138,7 +151,7 @@ async function getNextRequestParam(url) {
   const nextSecondaryLetter = String.fromCharCode(numSecondaryLetterCode + 1);
 
   /*
-    Both search string characters are 'z', which means we're done!
+    Search input is 'zz', which means we're done!
     At this point, we can write all the data to the file.
   */
   if (numLetterCode === 122 && numSecondaryLetterCode === 122) {
@@ -154,7 +167,7 @@ async function getNextRequestParam(url) {
     });
     file.end();
 
-    // Returning `true` will solve the Promise
+    // Returning `true` will resolve the Promise
     return true;
   }
   /*
