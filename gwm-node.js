@@ -6,7 +6,7 @@ const dicewareKit = require('./dicewareKit.js');
 const { JSDOM } = jsdom;
 
 let arrWords = [];
-let numLastTrimIndex = 0;
+let numLastLetterIndex = 0;
 
 // App constants
 const DOM_LIST_CLASSNAME = 'entryList';
@@ -14,8 +14,6 @@ const WORD_MIN_LEN = 3;
 const WORD_MAX_LEN = 7;
 const LONG_SIMILARITY_PERCENTAGE = 50;
 const SHORT_SIMILARITY_PERCENTAGE = 70;
-const DICEWARE_NUM_WORDS = 7776;
-const ALPHABET_NUM_LETTERS = 26;
 const DICT_SEARCH_URL = 'https://dexonline.ro/definitie-dex09/';
 const DICT_SEARCH_START_QUERY = 'aa*';
 const SAVE_FILE_NAME = 'words.txt';
@@ -154,7 +152,7 @@ async function getNextRequestParam(url) {
     const file = fs.createWriteStream(SAVE_FILE_NAME);
 
     // Merge with `dicewareKit`
-    console.log('***\n*** Merging words list with Diceware Kit...\n***');
+    console.log('***\n*** Merging words list with the Diceware Kit...\n***');
     arrWords = arrWords.concat(dicewareKit);
 
     // Write to file
@@ -176,19 +174,14 @@ async function getNextRequestParam(url) {
     going from 'az' to 'ba'
   */
   if (numSecondaryLetterCode + 1 > 122) {
-    console.log(`***\n*** Finished letter: "${strInput[0]}"\n***`);
+    console.log(
+      `***\n*** Finished letter: "${strInput[0]}"\n` +
+      `*** ${arrWords.length - numLastLetterIndex} words\n***`
+    );
     console.log(`***\n*** Starting letter: "${nextFirstLetter}"\n***`);
     console.log(`*** Fetching: ${nextFirstLetter}a`);
 
-    /*
-      Trim words list so the list is exactly 7776 words long 
-      If you change the length of the Diceware Kit, which has 236 elements,
-        you might still have to manually trim between 1 and 25 words,
-        if the division according to the below formula isn't precise.
-      Please comment the below if you'd like to manually trim the whole file.
-      Trim formula: (DICEWARE_NUM_WORDS - dicewareKit.length) / ALPHABET_NUM_LETTERS
-    */
-    // @TODO: use numlastTrimIndex
+    numLastLetterIndex = arrWords.length;
 
     await requestPage(`${DICT_SEARCH_URL}${nextFirstLetter}a*`);
   } else {
