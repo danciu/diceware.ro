@@ -6,6 +6,7 @@ const dicewareKit = require('./dicewareKit.js');
 const { JSDOM } = jsdom;
 
 let arrWords = [];
+let numLastTrimIndex = 0;
 
 // App constants
 const DOM_LIST_CLASSNAME = 'entryList';
@@ -13,6 +14,8 @@ const WORD_MIN_LEN = 3;
 const WORD_MAX_LEN = 7;
 const LONG_SIMILARITY_PERCENTAGE = 50;
 const SHORT_SIMILARITY_PERCENTAGE = 70;
+const DICEWARE_NUM_WORDS = 7776;
+const ALPHABET_NUM_LETTERS = 26;
 const DICT_SEARCH_URL = 'https://dexonline.ro/definitie-dex09/';
 const DICT_SEARCH_START_QUERY = 'aa*';
 const SAVE_FILE_NAME = 'words.txt';
@@ -66,7 +69,6 @@ function getSimilarityPercentage(strWordA, strWordB) {
  *   - The word is beween `WORD_MIN_LEN` and `WORD_MAX_LEN` in length;
  *   - There are no diacritics in 'word';
  *   - The word hasn't been added already;
- *   - The word isn't in the `dicewareKit` list;
  *   - The word isn't 'similar' to the previously added word (see below);
  *   - There are no spaces in 'word';
  *   - There are no dots in 'word'.
@@ -97,9 +99,6 @@ function loopThroughWordElements(list) {
       if (arrMatchingWords.indexOf(strWord) > -1) {
         continue;
       }
-      if (dicewareKit[strWord[0]].indexOf(strWord) > -1) {
-        continue;
-      }
       if (strPrevWord) {
         const arrSimilarityPercentage = getSimilarityPercentage(strWord, strPrevWord);
     
@@ -125,9 +124,6 @@ function loopThroughWordElements(list) {
       strPrevWord = strWord;
     }
 
-    // @TODO
-    // Concat `dicewareKit[strWord[0]]` with `arrWords`,
-    // and then finally concat with `arrMatchingWords`
     arrWords = arrWords.concat(arrMatchingWords);
 
     resolve(arrWords.length);
@@ -157,15 +153,20 @@ async function getNextRequestParam(url) {
   if (numLetterCode === 122 && numSecondaryLetterCode === 122) {
     const file = fs.createWriteStream(SAVE_FILE_NAME);
 
-    console.log(`***\n*** The end: ${arrWords.length} occurrences.\n***`);
+    // Merge with `dicewareKit`
+    console.log('***\n*** Merging words list with Diceware Kit...\n***');
+    arrWords = arrWords.concat(dicewareKit);
 
+    // Write to file
     file.on('error', (err) => {
-      /* error handling */
+      console.log(`!!!\n ERROR: ${err}\n!!!`);
     });
     arrWords.forEach((word) => {
       file.write(word + '\n');
     });
     file.end();
+
+    console.log(`***\n*** Saved ${arrWords.length} words to ${SAVE_FILE_NAME}\n***`);
 
     // Returning `true` will resolve the Promise
     return true;
@@ -178,6 +179,16 @@ async function getNextRequestParam(url) {
     console.log(`***\n*** Finished letter: "${strInput[0]}"\n***`);
     console.log(`***\n*** Starting letter: "${nextFirstLetter}"\n***`);
     console.log(`*** Fetching: ${nextFirstLetter}a`);
+
+    /*
+      Trim words list so the list is exactly 7776 words long 
+      If you change the length of the Diceware Kit, which has 236 elements,
+        you might still have to manually trim between 1 and 25 words,
+        if the division according to the below formula isn't precise.
+      Please comment the below if you'd like to manually trim the whole file.
+      Trim formula: (DICEWARE_NUM_WORDS - dicewareKit.length) / ALPHABET_NUM_LETTERS
+    */
+    // @TODO: use numlastTrimIndex
 
     await requestPage(`${DICT_SEARCH_URL}${nextFirstLetter}a*`);
   } else {
