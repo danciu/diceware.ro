@@ -46,7 +46,7 @@ Automatic trimming happens by modifying the constants in the `gwm-node.js`, afte
 
 #### a. The easy way
 
-(TOTAL_NUMBER_OF_LINES - 7776) / 26
+`(TOTAL_NUMBER_OF_LINES - 7776) / 26`
 
 Some letters, per example k, q, x etc. have very few entries, so usually you would have to remove more from the ones with a lot of words and very few, or none, from the other ones.
 
@@ -58,3 +58,8 @@ Express judgement as to what is appropriate by cherry-picking the words to delet
 
 Use an app like Excel or Numbers to paste the dice numbers in one column, and the words list in the other.
 Use the dice numbers available [here](https://github.com/danciu/diceware.ro/blob/master/helpers/dice-numbers-7776.txt).
+
+# Helpers
+
+### Dice numbers, 11111 to 66666
+Available [here](https://github.com/danciu/diceware.ro/blob/master/helpers/dice-numbers-7776.txt).
