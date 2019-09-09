@@ -1,27 +1,60 @@
 # diceware.ro
 Diceware in Romanian, script(s) and list(s).
 
+- [Lists](#lists)
+- [Creating your own list](#creating-your-own-list)
+- [Helpers](#helpers)
+
+# Lists
+You can find all the Romanian Diceware lists in the `/lists/` folder.
+
+## 1. ASCII (no diacritics), 3 to 7 letter words (v2)
+### First published on 07/09/2019
+### Updated on 09/09/2019
+
+- [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.txt)
+- [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.pdf)
+
+## 2. ASCII, 3 to 6 letter words (v1)
+### First published on 09/09/2019
+
+- [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-6.txt)
+- [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-6.pdf)
+
+## 3. UTF8 (*only* words with diacritics), 3 to 7 letter words
+### First published on 09/09/2019
+
+- [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.txt)
+- [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.pdf)
+
+## 4. UTF8 (*mixed* words, with and without diacritics), 3 to 6 letter words
+TBA - in progress
+
 # Creating your own list
-Edit the `gwm-node.js` script as needed, then run the script:
+
+### 1. Edit the `gwm-node.js` script as needed, then run the script:
 
 ```javascript
 node gwm-node.js
 ```
 
-# Lists
-You can find all the Romanian Diceware lists in the `/lists/` folder.
+This will compile the Diceware script (dictionary words + Diceware Kit).
 
-## 1. ASCII (no diacritics), 3 to 7 letter words (v1)
-### First published on 07/09/2019
+### 2. Trim the generated list as needed
 
-- [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.txt)
-- [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.pdf)
+Automatic trimming happens by modifying the constants in the `gwm-node.js`, after which you need to manually trim the file:
 
-## 2. ASCII, 3 to 6 letter words
-TBA
+#### a. The easy way
 
-## 3. UTF8 (words with diacritics), 3 to 7 letter words
-TBA
+(TOTAL_NUMBER_OF_LINES - 7776) / 26
 
-## 4. UTF8, 3 to 6 letter words
-TBA
+Some letters, per example k, q, x etc. have very few entries, so usually you would have to remove more from the ones with a lot of words and very few, or none, from the other ones.
+
+#### b. The hard way
+
+Express judgement as to what is appropriate by cherry-picking the words to delete (e.g. ambiguous and offensive words - although both criteria are very subjective).
+
+### 3. Add the dice numbers and create the final list
+
+Use an app like Excel or Numbers to paste the dice numbers in one column, and the words list in the other.
+Use the dice numbers available [here](https://github.com/danciu/diceware.ro/blob/master/helpers/dice-numbers-7776.txt).

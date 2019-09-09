@@ -11,9 +11,9 @@ let numLastLetterIndex = 0;
 // App constants
 const DOM_LIST_CLASSNAME = 'entryList';
 const WORD_MIN_LEN = 3;
-const WORD_MAX_LEN = 7;
+const WORD_MAX_LEN = 6;
 const LONG_SIMILARITY_PERCENTAGE = 50;
-const SHORT_SIMILARITY_PERCENTAGE = 70;
+const SHORT_SIMILARITY_PERCENTAGE = 50;
 const DICT_SEARCH_URL = 'https://dexonline.ro/definitie-dex09/';
 const DICT_SEARCH_START_QUERY = 'aa*';
 const SAVE_FILE_NAME = 'words.txt';
@@ -91,9 +91,9 @@ function loopThroughWordElements(list) {
         continue;
       }
       // Remove this if you'd like to produce an UTF8 version of the list.
-      if (/ă|î|â|ț|ș/.test(strWord)) {
-        continue;
-      }
+      // if (/ă|î|â|ț|ș/.test(strWord) === false) {
+      //   continue;
+      // }
       if (arrMatchingWords.indexOf(strWord) > -1) {
         continue;
       }
