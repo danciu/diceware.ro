@@ -26,6 +26,16 @@ You can find all the Romanian Diceware lists in the `/lists/` folder.
 - [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.txt)
 - [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.pdf)
 
+---
+
+> :warning:
+
+> Letters with diacritics are interpreted as the ones without, hence there is no particular order between them.
+
+> Per example, words starting with 's' are mingled with the ones starting with 'ș' - ordering depends on all the other letters in the word.
+
+---
+
 ## 4. UTF8 (*mixed* words, with and without diacritics), 3 to 6 letter words
 TBA - in progress
 
