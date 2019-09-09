@@ -9,20 +9,20 @@ Diceware in Romanian, script(s) and list(s).
 You can find all the Romanian Diceware lists in the `/lists/` folder.
 
 ## 1. ASCII (no diacritics), 3 to 7 letter words (v2)
-### First published on 07/09/2019
-### Updated on 09/09/2019
+> First published on 07/09/2019
+> Updated on 09/09/2019
 
 - [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.txt)
 - [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-7.pdf)
 
 ## 2. ASCII, 3 to 6 letter words (v1)
-### First published on 09/09/2019
+> First published on 09/09/2019
 
 - [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-6.txt)
 - [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-ascii-6.pdf)
 
 ## 3. UTF8 (*only* words with diacritics), 3 to 7 letter words
-### First published on 09/09/2019
+> First published on 09/09/2019
 
 - [TXT format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.txt)
 - [PDF format](https://github.com/danciu/diceware.ro/blob/master/lists/diceware-ro-utf8-7.pdf)
