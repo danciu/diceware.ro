@@ -2,7 +2,7 @@
  * A modified version of http://world.std.com/~reinhold/dicewarekit.txt
  * It only includes some numbers and special characters.
  */
-const dicewareKit = [
+export const DICEWARE_KIT = [
   '0',
   '1',
   '2',
@@ -238,7 +238,6 @@ const dicewareKit = [
   '?',
   '??',
   '???',
-  '@'
+  '@',
 ];
-
-module.exports = dicewareKit;
+export const DICT_SEARCH_URL = 'https://dexonline.ro/definitie-dex09/';

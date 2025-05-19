@@ -41,17 +41,17 @@ TBA - in progress
 
 # Creating your own list
 
-### 1. Edit the `gwm-node.js` script as needed, then run the script:
+### 1. Edit the scripts as needed, then run:
 
 ```javascript
-node gwm-node.js
+node src/index.ts
 ```
 
 This will compile the Diceware script (dictionary words + Diceware Kit).
 
 ### 2. Trim the generated list as needed
 
-Automatic trimming happens by modifying the constants in the `gwm-node.js`, after which you need to manually trim the file:
+Automatic trimming happens by modifying the constants in the `src/helpers/get-words-from-elements/get-words-from-elements.ts` file, after which you need to manually trim the file:
 
 #### a. The easy way
 
@@ -66,9 +66,9 @@ Express judgement as to what is appropriate by cherry-picking the words to delet
 ### 3. Add the dice numbers and create the final list
 
 Use an app like Excel or Numbers to paste the dice numbers in one column, and the words list in the other.
-Use the dice numbers available [here](https://github.com/danciu/diceware.ro/blob/master/helpers/dice-numbers-7776.txt).
+Use the dice numbers available [here](https://github.com/danciu/diceware.ro/blob/master/resources/dice-numbers-7776.txt).
 
 # Helpers
 
 ### Dice numbers, 11111 to 66666
-Available [here](https://github.com/danciu/diceware.ro/blob/master/helpers/dice-numbers-7776.txt).
+Available [here](https://github.com/danciu/diceware.ro/blob/master/resources/dice-numbers-7776.txt).

@@ -1,0 +1,11 @@
+{
+  "clearMocks": true,
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "coveragePathIgnorePatterns": ["/node_modules/"],
+  "testEnvironment": "node",
+  "testMatch": ["**/*.test.{js,ts}"],
+  "verbose": true,
+  "silent": false,
+  "preset": "ts-jest"
+}
