@@ -1,8 +1,8 @@
 {
-  "name": "diceware_list",
+  "name": "diceware.ro",
   "version": "1.0.0",
-  "description": "Diceware in Romanian, script(s) and list(s)",
-  "main": "gwm-node.js",
+  "description": "Diceware (RO), - lists and nodes dictionary scraper",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest",
     "test:file": "jest -i"
